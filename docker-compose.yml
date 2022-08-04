@@ -1,0 +1,26 @@
+version: "3"
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: root
+      TZ: Asia/Tokyo
+    ports:
+      - 3306:3306
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./db/mysql_data:/var/lib/mysql
+
+  node:
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./app:/usr/src/app
+      # - /usr/src/app/node_modules
+    command: sh -c 'yarn && yarn tsc && cd src && yarn start'
+    ports:
+      - 3000:3000
