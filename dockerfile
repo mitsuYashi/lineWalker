@@ -1,6 +1,6 @@
 FROM node:18
 WORKDIR /usr/src/app
-COPY ./app/package*/json ./
+COPY ./app/package.json ./
 RUN yarn install
 
 COPY ./app ./
