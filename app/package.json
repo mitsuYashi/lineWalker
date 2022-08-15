@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "server.js",
   "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
     "@line/bot-sdk": "^7.5.0",
