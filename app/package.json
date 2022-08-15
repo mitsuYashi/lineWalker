@@ -1,7 +1,7 @@
 {
-  "name": "LineWalker",
+  "name": "line-walker",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "license": "MIT",
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
