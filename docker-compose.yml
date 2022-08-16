@@ -21,6 +21,6 @@ services:
     volumes:
       - ./app:/usr/src/app
       # - /usr/src/app/node_modules
-    command: sh -c 'yarn && node server.js'
+    command: sh -c 'yarn && start'
     ports:
       - 3000:3000
