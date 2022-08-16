@@ -7,4 +7,4 @@ COPY . ./
 EXPOSE 3000
 
 # CMD ["yarn", "start"]
-CMD ["sh", "-c", "echo hello"]
+CMD ["sh", "-c", "echo", "hello"]
