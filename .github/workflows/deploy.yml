@@ -11,7 +11,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   SERVICE: line-walker
-  IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/$SERVICE:${{ github.sha }}
+  IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/line-walker:${{ github.sha }}
 
 jobs:
   deploy:
