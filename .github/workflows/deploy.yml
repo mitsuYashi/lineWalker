@@ -43,15 +43,15 @@ jobs:
       run: gcloud auth configure-docker --quiet
 
     - name: Build a docker image
-      run: docker build -t $IMAGE .
+      run: docker build -t asia.gcr.io/$PROJECT_ID/line-walker:${{ github.sha }} ./app
 
     - name: Push the docker image to Container Registry
-      run: docker push $IMAGE
+      run: docker push asia.gcr.io/$PROJECT_ID/line-walker:${{ github.sha }}
 
     - name: Deploy to Cloud Run
       run: |
           gcloud run deploy $SERVICE_NAME \
-            --image $IMAGE \
+            --image asia.gcr.io/$PROJECT_ID/line-walker:${{ github.sha }} \
             --project $PROJECT_ID \
             --region "asia-northeast1" \
             --platform=managed \
