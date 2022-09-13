@@ -2,10 +2,10 @@ FROM node:18
 WORKDIR /usr/src/app
 COPY package*.json yarn.lock ./
 # RUN yarn install --prod
-RUN yarn install --frozen-lockfile
+RUN yarn install 
 
 COPY . ./
 
-CMD [ "node", "src/server.js" ]
+CMD [ "node", "server.js" ]
 # CMD ["yarn", "start"]
 # CMD ["sh", "-c", "echo", "hello"]
