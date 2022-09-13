@@ -15,12 +15,12 @@ services:
   node:
     build:
       context: ./app
-      dockerfile: dockerfile
+      dockerfile: DockerfileDev
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
       - ./app:/usr/src/app
       # - /usr/src/app/node_modules
-    command: sh -c 'yarn && yarn start'
+    command: sh -c 'yarn && yarn start && yarn tsc src/server.ts'
     ports:
       - 3000:3000
