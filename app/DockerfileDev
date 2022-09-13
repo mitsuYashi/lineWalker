@@ -6,6 +6,6 @@ RUN yarn install
 
 COPY . ./
 
-CMD [ "node", "server.js" ]
+CMD [ "node", "src/server.js" ]
 # CMD ["yarn", "start"]
 # CMD ["sh", "-c", "echo", "hello"]
