@@ -1,58 +1,19 @@
-import "dotenv/config";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const express = require("express");
-const app = express();
-import {
-  Client,
-  ClientConfig,
-  middleware,
-  MiddlewareConfig,
-  WebhookEvent,
-} from "@line/bot-sdk";
-import { Request, Response } from "express";
-const PORT = process.env.PORT || 3000;
+import express, { Request, Response } from "express";
+// import { createServer } from "http";
+// import { bodyParser } from "body-parser";
+import userRouter from "./userRouter.js";
 
-const config: MiddlewareConfig = {
-  channelAccessToken: process.env.LINE_ACCESS_TOKEN,
-  channelSecret: process.env.LINE_CHANNEL_SECRET ?? "",
-};
+const dev = process.env.NODE_ENV !== "production";
+const port = process.env.PORT || "3000";
 
-const clientConfig: ClientConfig = {
-  channelAccessToken: process.env.LINE_ACCESS_TOKEN ?? "",
-  channelSecret: process.env.LINE_CHANNEL_SECRET,
-};
-
-app.get("/", async (req: Request, res: Response): Promise<Response> => {
-  return res.status(200).json({
-    status: "success",
-    message: "Connected successfully!",
-  });
+const server = express();
+server.use("/user", userRouter);
+server.get("/", (req: Request, res: Response) => {
+  res.send("サーバー起動しています。");
 });
-app.post("/webhook", middleware(config), (req: Request, res: Response) => {
-  console.log(req.body?.events);
-  Promise.all(req.body?.events.map(handleEvent)).then((result) =>
-    res.json(result)
+server.listen(port, (err?: any) => {
+  if (err) throw err;
+  console.log(
+    `> Ready on http://localhost:${port} - env ${process.env.NODE_ENV}`
   );
 });
-
-const client = new Client(clientConfig);
-
-const handleEvent = async (event: WebhookEvent) => {
-  let msg = ``;
-
-  if (event.type !== "message" || event.message.type !== "text") {
-    return Promise.resolve(null);
-  }
-
-  const profile = await client.getProfile(event.source.userId ?? "");
-  console.log(profile);
-  msg = `${profile.displayName}さんこんにちは。 あなたのユーザーIDは${profile.userId}です。`;
-
-  return client.replyMessage(event.replyToken, {
-    type: "text",
-    text: msg,
-  });
-};
-
-app.listen(PORT);
-console.log(`Server running at ${PORT}`);
