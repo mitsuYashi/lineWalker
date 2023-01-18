@@ -1,16 +1,16 @@
 version: "3"
 services:
-  db:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: root
-      TZ: Asia/Tokyo
-    ports:
-      - 3306:3306
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ./db/mysql_data:/var/lib/mysql
+  # db:
+  #   image: mysql:8
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password
+  #     MYSQL_DATABASE: root
+  #     TZ: Asia/Tokyo
+  #   ports:
+  #     - 3306:3306
+  #   command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+  #   volumes:
+  #     - ./db/mysql_data:/var/lib/mysql
 
   node:
     build:
@@ -21,6 +21,6 @@ services:
     volumes:
       - ./app:/usr/src/app
       # - /usr/src/app/node_modules
-    command: sh -c 'yarn && yarn start && yarn tsc src/server.ts'
+    command: sh -c 'yarn && yarn start'
     ports:
       - 3000:3000
