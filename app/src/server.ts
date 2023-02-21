@@ -1,6 +1,6 @@
+import * as dotenv from "dotenv";
+dotenv.config();
 import express, { Request, Response } from "express";
-// import { createServer } from "http";
-// import { bodyParser } from "body-parser";
 import userRouter from "./userRouter.js";
 
 const dev = process.env.NODE_ENV !== "production";
