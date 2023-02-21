@@ -23,4 +23,4 @@ services:
       # - /usr/src/app/node_modules
     command: sh -c 'yarn && yarn start'
     ports:
-      - 3000:3000
+      - 8080:8080
