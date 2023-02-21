@@ -8,6 +8,8 @@ import { addDays, startOfDay } from "date-fns";
 import pkg from "date-fns-tz";
 const { utcToZonedTime } = pkg;
 
+const dev = process.env.NODE_ENV !== "production";
+
 declare module "express-session" {
   interface SessionData {
     refresh_token: string;
@@ -18,7 +20,7 @@ const router = express.Router();
 
 router.use(
   session({
-    secret: "secretkey",
+    secret: process.env.secretkey ?? "secret",
     resave: false,
     name: "session",
     saveUninitialized: true,
@@ -33,12 +35,12 @@ router.use((req, res, next) => {
   next();
 });
 
-router.get("/", (req, res, next) => {
-  const options = {
-    clientId: process.env.client_id,
-    clientSecret: process.env.client_secret,
-    redirectUri: "http://localhost:3000/user/oauth2callback",
-  };
+const options = {
+  clientId: process.env.client_id,
+  clientSecret: process.env.client_secret,
+  redirectUri: process.env.redirect_uris,
+};
+router.get("/", (req, res) => {
   const oauth2Client = new google.auth.OAuth2(options);
   const scopes = [
     "https://www.googleapis.com/auth/fitness.location.read",
@@ -56,11 +58,11 @@ router.get("/", (req, res, next) => {
 });
 
 router.get("/oauth2callback", async (req, res) => {
-  const options = {
-    clientId: process.env.client_id,
-    clientSecret: process.env.client_secret,
-    redirectUri: "http://localhost:3000/user/oauth2callback",
-  };
+  // const options = {
+  //   clientId: process.env.client_id,
+  //   clientSecret: process.env.client_secret,
+  //   redirectUri: "http://localhost:8080/user/oauth2callback",
+  // };
   const oauth2Client = new google.auth.OAuth2(options);
   const code = req.query.code as string;
 
@@ -80,11 +82,11 @@ router.get("/steps", async (req, res) => {
     return res.redirect("/user");
   }
 
-  const options = {
-    clientId: process.env.client_id,
-    clientSecret: process.env.client_secret,
-    redirectUri: "http://localhost:3000/user/oauth2callback",
-  };
+  // const options = {
+  //   clientId: process.env.client_id,
+  //   clientSecret: process.env.client_secret,
+  //   redirectUri: "http://localhost:8080/user/oauth2callback",
+  // };
   const oauth2Client = new google.auth.OAuth2(options);
   oauth2Client.setCredentials({
     refresh_token: req.session.refresh_token,
