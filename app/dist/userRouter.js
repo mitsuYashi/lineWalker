@@ -9,7 +9,7 @@ const { utcToZonedTime } = pkg;
 const dev = process.env.NODE_ENV !== "production";
 const router = express.Router();
 router.use(session({
-    secret: "secretkey",
+    secret: process.env.secretkey ?? "secret",
     resave: false,
     name: "session",
     saveUninitialized: true,
@@ -23,7 +23,7 @@ router.use((req, res, next) => {
 const options = {
     clientId: process.env.client_id,
     clientSecret: process.env.client_secret,
-    redirectUri: JSON.parse(process.env.redirect_uris ?? "")[dev ? 0 : 1],
+    redirectUri: process.env.redirect_uris,
 };
 router.get("/", (req, res) => {
     const oauth2Client = new google.auth.OAuth2(options);
