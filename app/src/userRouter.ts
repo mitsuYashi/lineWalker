@@ -61,11 +61,6 @@ router.get("/", (req, res) => {
 });
 
 router.get("/oauth2callback", async (req, res) => {
-  // const options = {
-  //   clientId: process.env.client_id,
-  //   clientSecret: process.env.client_secret,
-  //   redirectUri: "http://localhost:8080/user/oauth2callback",
-  // };
   const oauth2Client = new google.auth.OAuth2(options);
   const code = req.query.code as string;
 
@@ -76,7 +71,7 @@ router.get("/oauth2callback", async (req, res) => {
   req.session.refresh_token = tokens.refresh_token ?? "";
 
   // res.redirect("/user/steps");
-  res.redirect("http://localhost:3000");
+  res.redirect("https://line-walker-next.vercel.app/");
   res.end();
 });
 
@@ -86,11 +81,6 @@ router.get("/steps", async (req, res) => {
     return res.redirect("/user");
   }
 
-  // const options = {
-  //   clientId: process.env.client_id,
-  //   clientSecret: process.env.client_secret,
-  //   redirectUri: "http://localhost:8080/user/oauth2callback",
-  // };
   const oauth2Client = new google.auth.OAuth2(options);
   oauth2Client.setCredentials({
     refresh_token: req.session.refresh_token,

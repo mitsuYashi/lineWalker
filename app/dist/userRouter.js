@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
+import cors from "cors";
 import session from "express-session";
 import { google } from "googleapis";
 import { addDays, startOfDay } from "date-fns";
@@ -16,6 +17,7 @@ router.use(session({
 }));
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
+router.use(cors());
 router.use((req, res, next) => {
     // req.session.refresh_token = "";
     next();
@@ -40,18 +42,14 @@ router.get("/", (req, res) => {
     res.end();
 });
 router.get("/oauth2callback", async (req, res) => {
-    // const options = {
-    //   clientId: process.env.client_id,
-    //   clientSecret: process.env.client_secret,
-    //   redirectUri: "http://localhost:8080/user/oauth2callback",
-    // };
     const oauth2Client = new google.auth.OAuth2(options);
     const code = req.query.code;
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
     console.log(tokens.refresh_token);
     req.session.refresh_token = tokens.refresh_token ?? "";
-    res.redirect("/user/steps");
+    // res.redirect("/user/steps");
+    res.redirect("https://line-walker-next.vercel.app/");
     res.end();
 });
 router.get("/steps", async (req, res) => {
@@ -59,11 +57,6 @@ router.get("/steps", async (req, res) => {
     if (!req.session.refresh_token) {
         return res.redirect("/user");
     }
-    // const options = {
-    //   clientId: process.env.client_id,
-    //   clientSecret: process.env.client_secret,
-    //   redirectUri: "http://localhost:8080/user/oauth2callback",
-    // };
     const oauth2Client = new google.auth.OAuth2(options);
     oauth2Client.setCredentials({
         refresh_token: req.session.refresh_token,
