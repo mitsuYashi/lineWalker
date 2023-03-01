@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
+import cors from "cors";
 import session from "express-session";
 import { google } from "googleapis";
 
@@ -29,6 +30,8 @@ router.use(
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
+
+router.use(cors());
 
 router.use((req, res, next) => {
   // req.session.refresh_token = "";
