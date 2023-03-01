@@ -75,7 +75,8 @@ router.get("/oauth2callback", async (req, res) => {
   console.log(tokens.refresh_token);
   req.session.refresh_token = tokens.refresh_token ?? "";
 
-  res.redirect("/user/steps");
+  // res.redirect("/user/steps");
+  res.redirect("http://localhost:3000");
   res.end();
 });
 
