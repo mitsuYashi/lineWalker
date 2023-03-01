@@ -2,9 +2,11 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import userRouter from "./userRouter.js";
+import cors from "cors";
 const dev = process.env.NODE_ENV !== "production";
 const port = process.env.PORT || "3000";
 const server = express();
+server.use(cors());
 server.use("/user", userRouter);
 server.get("/", (req, res) => {
     res.send("サーバー起動しています。");
