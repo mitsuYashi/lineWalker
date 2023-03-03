@@ -78,7 +78,7 @@ router.get("/oauth2callback", async (req, res) => {
 router.get("/steps", async (req, res) => {
   console.log(req.session.refresh_token);
   if (!req.session.refresh_token) {
-    return res.redirect("/user");
+    return res.send(0);
   }
 
   const oauth2Client = new google.auth.OAuth2(options);
