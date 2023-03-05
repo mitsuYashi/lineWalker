@@ -48,7 +48,7 @@ router.get("/oauth2callback", async (req, res) => {
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
     // console.log("tokens", tokens);
-    // console.log("tokens.refresh_token", tokens.refresh_token);
+    console.log("tokens.refresh_token", tokens.refresh_token);
     req.session.refresh_token = tokens.refresh_token ?? "";
     // res.redirect("/user/steps");
     res.redirect(`https://line-walker-next.vercel.app/oauth2callback?code=${tokens.refresh_token}`);

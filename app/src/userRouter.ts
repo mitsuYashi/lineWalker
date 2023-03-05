@@ -70,7 +70,7 @@ router.get("/oauth2callback", async (req, res) => {
   oauth2Client.setCredentials(tokens);
 
   // console.log("tokens", tokens);
-  // console.log("tokens.refresh_token", tokens.refresh_token);
+  console.log("tokens.refresh_token", tokens.refresh_token);
   req.session.refresh_token = tokens.refresh_token ?? "";
 
   // res.redirect("/user/steps");
