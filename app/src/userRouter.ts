@@ -62,22 +62,20 @@ router.get("/", (req, res) => {
 });
 
 router.get("/oauth2callback", async (req, res) => {
-  // const oauth2Client = new google.auth.OAuth2(options);
+  const oauth2Client = new google.auth.OAuth2(options);
   const code = req.query.code as string;
 
-  console.log("code", code);
+  // console.log("code", code);
   const { tokens } = await oauth2Client.getToken(code);
   oauth2Client.setCredentials(tokens);
 
-  console.log("tokens", tokens);
-  console.log("tokens.refresh_token", tokens.refresh_token);
+  // console.log("tokens", tokens);
+  // console.log("tokens.refresh_token", tokens.refresh_token);
   req.session.refresh_token = tokens.refresh_token ?? "";
 
   // res.redirect("/user/steps");
   res.redirect(
-    `https://line-walker-next.vercel.app/oauth2callback?code=${
-      tokens.refresh_token as string
-    }`
+    `https://line-walker-next.vercel.app/oauth2callback?code=${tokens.refresh_token}`
   );
   res.end();
 });
