@@ -11,6 +11,14 @@ services:
   #   command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
   #   volumes:
   #     - ./db/mysql_data:/var/lib/mysql
+  db:
+    image: postgres:14
+    ports:
+      - 5432:5432
+    volumes:
+      - ./db-store:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
 
   node:
     build:
