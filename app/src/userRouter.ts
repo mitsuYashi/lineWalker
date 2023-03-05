@@ -73,7 +73,9 @@ router.get("/oauth2callback", async (req, res) => {
 
   // res.redirect("/user/steps");
   res.redirect(
-    `https://line-walker-next.vercel.app/oauth2callback?code=${tokens.refresh_token}`
+    `https://line-walker-next.vercel.app/oauth2callback?code=${
+      tokens.refresh_token as string
+    }`
   );
   res.end();
 });
