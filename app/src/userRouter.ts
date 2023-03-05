@@ -43,8 +43,9 @@ const options = {
   clientSecret: process.env.client_secret,
   redirectUri: process.env.redirect_uris,
 };
+const oauth2Client = new google.auth.OAuth2(options);
+
 router.get("/", (req, res) => {
-  const oauth2Client = new google.auth.OAuth2(options);
   const scopes = [
     "https://www.googleapis.com/auth/fitness.location.read",
     "https://www.googleapis.com/auth/fitness.activity.read",
@@ -61,7 +62,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/oauth2callback", async (req, res) => {
-  const oauth2Client = new google.auth.OAuth2(options);
+  // const oauth2Client = new google.auth.OAuth2(options);
   const code = req.query.code as string;
 
   const { tokens } = await oauth2Client.getToken(code);
@@ -71,19 +72,24 @@ router.get("/oauth2callback", async (req, res) => {
   req.session.refresh_token = tokens.refresh_token ?? "";
 
   // res.redirect("/user/steps");
-  res.redirect("https://line-walker-next.vercel.app/");
+  res.redirect(
+    `https://line-walker-next.vercel.app/oauth2callback?code=${tokens.refresh_token}`
+  );
   res.end();
 });
 
 router.get("/steps", async (req, res) => {
-  console.log(req.session.refresh_token);
-  if (!req.session.refresh_token) {
-    return res.send(0);
-  }
+  // console.log(req.session.refresh_token);
+  // if (!req.session.refresh_token) {
+  //   return res.send(0);
+  // }
 
-  const oauth2Client = new google.auth.OAuth2(options);
+  // const oauth2Client = new google.auth.OAuth2(options);
+
+  const refresh_token = req.query.code as string;
+
   oauth2Client.setCredentials({
-    refresh_token: req.session.refresh_token,
+    refresh_token: refresh_token,
   });
 
   const fitness = google.fitness({ version: "v1", auth: oauth2Client });
