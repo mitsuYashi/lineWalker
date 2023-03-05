@@ -6,6 +6,6 @@ RUN yarn install --frozen-lockfile
 
 COPY . ./
 
-# CMD [ "node", "dist/server.js" ]
-CMD ["yarn", "start"]
+CMD [ "node", "dist/server.js" ]
+# CMD ["yarn", "start"]
 # CMD ["sh", "-c", "echo", "hello"]
