@@ -122,7 +122,7 @@ router.get("/steps", async (req, res) => {
     });
 
     const oneDayAgoSteps =
-      fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal?.toString();
+      fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal;
 
     res.send({ steps: [14182, 95, 12165, 8440, 31, 9759, oneDayAgoSteps] });
 
