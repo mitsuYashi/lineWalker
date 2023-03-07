@@ -81,6 +81,11 @@ router.get("/oauth2callback", async (req, res) => {
   res.end();
 });
 
+router.get("/nouser/steps", async (req, res) => {
+  const steps = localStorage.getItem("steps");
+  res.send(steps);
+});
+
 router.get("/steps", async (req, res) => {
   console.log(req.session.refresh_token);
   if (!req.session.refresh_token) {
@@ -124,7 +129,10 @@ router.get("/steps", async (req, res) => {
     });
 
     const oneDayAgoSteps =
-      fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal;
+      fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal ??
+      0;
+
+    localStorage.setItem("steps", oneDayAgoSteps?.toString());
 
     res.send({ steps: [14182, 95, 12165, 8440, 58, 9759, oneDayAgoSteps] });
 
