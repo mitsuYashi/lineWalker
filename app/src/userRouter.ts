@@ -74,10 +74,10 @@ router.get("/oauth2callback", async (req, res) => {
   res.end();
 });
 
-// router.get("/nouser/steps", async (req, res) => {
-//   const steps = localStorage.getItem("steps");
-//   res.send(steps);
-// });
+router.get("/nouser/steps", async (req, res) => {
+  const steps = localStorage.getItem("steps");
+  res.send(14017);
+});
 
 router.get("/steps", async (req, res) => {
   console.log(req.session.refresh_token);
