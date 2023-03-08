@@ -44,23 +44,23 @@ router.get("/", (req, res) => {
 router.get("/oauth2callback", async (req, res) => {
     const oauth2Client = new google.auth.OAuth2(options);
     const code = req.query.code;
-    // console.log("code", code);
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
-    // console.log("tokens", tokens);
-    console.log("tokens.refresh_token", tokens.refresh_token);
     req.session.refresh_token = tokens.refresh_token ?? "";
-    // res.redirect("/user/steps");
-    res.redirect(`https://line-walker-next.vercel.app/oauth2callback?code=${tokens.refresh_token}`);
+    res.redirect(`https://line-walker-next.vercel.app/`);
     res.end();
 });
+// router.get("/nouser/steps", async (req, res) => {
+//   const steps = localStorage.getItem("steps");
+//   res.send(steps);
+// });
 router.get("/steps", async (req, res) => {
-    // console.log(req.session.refresh_token);
-    // if (!req.session.refresh_token) {
-    //   return res.send(0);
-    // }
-    // const oauth2Client = new google.auth.OAuth2(options);
-    const refresh_token = req.query.code;
+    console.log(req.session.refresh_token);
+    if (!req.session.refresh_token) {
+        return res.send([0, 0, 0, 0, 0, 0, 0]);
+    }
+    // const refresh_token = req.query.code as string;
+    const refresh_token = req.session.refresh_token;
     oauth2Client.setCredentials({
         refresh_token: refresh_token,
     });
@@ -87,14 +87,16 @@ router.get("/steps", async (req, res) => {
                 endTimeMillis: endTime.toString(),
             },
         });
-        const oneDayAgoSteps = fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal;
+        const oneDayAgoSteps = fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal ??
+            0;
+        // localStorage.setItem("steps", oneDayAgoSteps?.toString());
         res.send({ steps: [14182, 95, 12165, 8440, 58, 9759, oneDayAgoSteps] });
         // res.send(
         //   fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal?.toString()
         // );
     }
     catch (err) {
-        res.status(500).send({ message: "permission denieded" });
+        res.status(500).send({ message: err });
     }
 });
 export default router;
