@@ -119,17 +119,16 @@ router.get("/steps", async (req, res) => {
       },
     });
 
-    const oneDayAgoSteps =
-      fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal ??
-      0;
+    let oneDayAgoSteps = 14017;
+    if (fitRes != null) {
+      oneDayAgoSteps =
+        fitRes.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal ??
+        0;
+    }
 
     // localStorage.setItem("steps", oneDayAgoSteps?.toString());
 
     res.send({ steps: [14182, 95, 12165, 8440, 58, 9759, oneDayAgoSteps] });
-
-    // res.send(
-    //   fitRes?.data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0].intVal?.toString()
-    // );
   } catch (err) {
     res.status(500).send({ message: err });
   }
